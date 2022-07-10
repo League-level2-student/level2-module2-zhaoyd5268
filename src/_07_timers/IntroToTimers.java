@@ -13,12 +13,13 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+
 /*
  * We're going to make a simple game using a timer. We'll have a countdown
  * in the middle of the screen, and the player needs to hit spacebar right 
  * as the countdown hits zero. 
  */
-public class IntroToTimers extends JPanel implements ActionListener, KeyListener{
+public class IntroToTimers extends JPanel implements ActionListener, KeyListener {
 	static final int WIDTH = 500;
 	static final int HEIGHT = 500;
 	JFrame frame = new JFrame();
@@ -26,9 +27,9 @@ public class IntroToTimers extends JPanel implements ActionListener, KeyListener
 	int time;
 	int maxTime = 45;
 	int speed = 30;
-	
-	// 1. Declare a Timer variable, but do not initialize it.
 
+	// 1. Declare a Timer variable, but do not initialize it.
+	 Timer timer;
 
 	public static void main(String[] args) {
 		IntroToTimers tg = new IntroToTimers();
@@ -39,19 +40,22 @@ public class IntroToTimers extends JPanel implements ActionListener, KeyListener
 		frame.add(this);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setPreferredSize(new Dimension (WIDTH,HEIGHT));
+		frame.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		frame.pack();
 		frame.addKeyListener(this);
-		
+
 		// 2. Set the time variable to maxTime
-
-		// 3. Initialize timer to a new Timer object. For the first argument, use 1000/speed. For the second argument, use this
-
-		// 11. Run it! Notice how it doesn't update? That's because our timer isn't triggering the actionPerformed() method yet!
+			timer.setDelay(maxTime);
+		// 3. Initialize timer to a new Timer object. For the first argument, use
+		// 1000/speed. For the second argument, use this
+			timer = new Timer(1000/speed, this);
+		// 11. Run it! Notice how it doesn't update? That's because our timer isn't
+		// triggering the actionPerformed() method yet!
 		// 12. Make the timer start!
 
-		// 13. Run the program. Is it possible for you to win? 
-		// 14. Figure out how to make it harder or easier! (Which condition is most related to whether you win or not?)
+		// 13. Run the program. Is it possible for you to win?
+		// 14. Figure out how to make it harder or easier! (Which condition is most
+		// related to whether you win or not?)
 	}
 
 	@Override
@@ -60,27 +64,23 @@ public class IntroToTimers extends JPanel implements ActionListener, KeyListener
 
 		// 9. if time is less than or equal to 2...
 
-			// 10. Set time equal to maxTime
+		// 10. Set time equal to maxTime
 
-		
 		repaint();
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
-		
+
 		// 4. if keyCode is 32 (that's the spacebar key!)...
 
+		// 5. if time is less than 2...
 
-			// 5. if time is less than 2...
+		// 6. Tell them they win!
 
-				// 6. Tell them they win!
+		// 7. Otherwise, set time equal to maxTime
 
-			
-			// 7. Otherwise, set time equal to maxTime
-
-		
 	}
 
 	@Override
@@ -89,9 +89,9 @@ public class IntroToTimers extends JPanel implements ActionListener, KeyListener
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		g.setColor(Color.RED);
 		g.setFont(font);
-		g.drawString(time+"", WIDTH/2-50, HEIGHT/2);
+		g.drawString(time + "", WIDTH / 2 - 50, HEIGHT / 2);
 	}
-	
+
 	@Override
 	public void keyReleased(KeyEvent e) {
 	}
