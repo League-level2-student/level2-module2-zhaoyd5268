@@ -1,5 +1,7 @@
 package _08_LeagueSnake;
 
+import java.util.ArrayList;
+
 import processing.core.PApplet;
 
 public class LeagueSnake extends PApplet {
@@ -12,12 +14,12 @@ public class LeagueSnake extends PApplet {
 	 * Put all the game variables here.
 	 */
 	Segment head;
-
+	ArrayList<Segment> tailSegments = new ArrayList<Segment>();
 	int foodX;
 	int foodY;
 	int direction = UP;
 	int foodeaten = 0;
-
+	
 	/*
 	 * Setup methods
 	 * 
@@ -26,11 +28,12 @@ public class LeagueSnake extends PApplet {
 	@Override
 	public void settings() {
 		setSize(500, 500);
+
 	}
 
 	@Override
 	public void setup() {
-		head = new Segment(375, 400);
+		head = new Segment(370, 400);
 		frameRate(20);
 		dropFood();
 	}
@@ -53,7 +56,7 @@ public class LeagueSnake extends PApplet {
 		drawFood();
 		move();
 		drawSnake();
-
+		eat();
 	}
 
 	void drawFood() {
@@ -66,12 +69,17 @@ public class LeagueSnake extends PApplet {
 		// Draw the head of the snake followed by its tail
 		fill(125, 235, 52);
 		rect(head.x, head.y, 10, 10);
+		manageTail();
 	}
 
 	void drawTail() {
 		// Draw each segment of the tail
-
-	}
+		
+		fill(125, 235, 52);
+		for(int i = 0; i<tailSegments.size(); i++) {
+		rect(tailSegments.get(i).x, tailSegments.get(i).y, 10, 10);
+		}
+		}
 
 	/*
 	 * Tail Management methods
@@ -82,6 +90,11 @@ public class LeagueSnake extends PApplet {
 	void manageTail() {
 		// After drawing the tail, add a new segment at the "start" of the tail and
 		// remove the one at the "end"
+		checkTailCollision();
+		drawTail();
+		Segment tailSegment = new Segment(head.x, head.y);
+		tailSegments.add(tailSegment);
+		tailSegments.remove(0);
 		// This produces the illusion of the snake tail moving.
 
 	}
@@ -101,16 +114,16 @@ public class LeagueSnake extends PApplet {
 	public void keyPressed() {
 		// Set the direction of the snake according to the arrow keys pressed
 		if (key == CODED) {
-			if (key == UP) {
+			if (keyCode == UP) {
 				direction = UP;
 			}
-			if (key == DOWN) {
+			if (keyCode == DOWN) {
 				direction = DOWN;
 			}
-			if (key == LEFT) {
+			if (keyCode == LEFT) {
 				direction = LEFT;
 			}
-			if (key == RIGHT) {
+			if (keyCode == RIGHT) {
 				direction = RIGHT;
 			}
 		}
@@ -134,22 +147,27 @@ public class LeagueSnake extends PApplet {
 	}
 
 	void checkBoundaries() {
-        // If the snake leaves the frame, make it reappear on the other side
-        if (head.x == 500) {
-        	head.x = 0;
-        } else if (head.x == 0) {
-        	head.x = 500;
-        } else if (head.y == 500) {
-        	head.y = 0;
-        } else if (head.y == 0) {
-        	head.y = 500;
-        }
-    }
+		// If the snake leaves the frame, make it reappear on the other side
+		if (head.x > 505) {
+			head.x = 0;
+		} else if (head.x < -5) {
+			head.x = 500;
+		} else if (head.y > 505) {
+			head.y = 1;
+		} else if (head.y < -5) {
+			head.y = 500;
+		}
+	}
 
 	void eat() {
 		// When the snake eats the food, its tail should grow and more
 		// food appear
-
+		if (head.x == foodX && head.y == foodY) {
+			foodeaten += 1;
+			dropFood();
+			Segment segment = new Segment(head.x, head.y);
+			tailSegments.add(segment);
+		}
 	}
 
 	static public void main(String[] passedArgs) {
