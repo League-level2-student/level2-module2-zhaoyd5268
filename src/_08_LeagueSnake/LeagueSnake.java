@@ -19,7 +19,7 @@ public class LeagueSnake extends PApplet {
 	int foodY;
 	int direction = UP;
 	int foodeaten = 0;
-	
+
 	/*
 	 * Setup methods
 	 * 
@@ -27,7 +27,7 @@ public class LeagueSnake extends PApplet {
 	 */
 	@Override
 	public void settings() {
-		setSize(500, 500);
+		size(500, 500);
 
 	}
 
@@ -61,25 +61,25 @@ public class LeagueSnake extends PApplet {
 
 	void drawFood() {
 		// Draw the food
-		fill(235, 58, 52);
+		fill(125, 235, 52);
 		rect(foodX, foodY, 10, 10);
 	}
 
 	void drawSnake() {
 		// Draw the head of the snake followed by its tail
-		fill(125, 235, 52);
+		fill(255, 15, 15);
 		rect(head.x, head.y, 10, 10);
 		manageTail();
 	}
 
 	void drawTail() {
 		// Draw each segment of the tail
-		
-		fill(125, 235, 52);
-		for(int i = 0; i<tailSegments.size(); i++) {
-		rect(tailSegments.get(i).x, tailSegments.get(i).y, 10, 10);
+
+		fill(255, 15, 15);
+		for (int i = 0; i < tailSegments.size(); i++) {
+			rect(tailSegments.get(i).x, tailSegments.get(i).y, 10, 10);
 		}
-		}
+	}
 
 	/*
 	 * Tail Management methods
@@ -101,7 +101,14 @@ public class LeagueSnake extends PApplet {
 
 	void checkTailCollision() {
 		// If the snake crosses its own tail, shrink the tail back to one segment
-
+		for (int i = 0; i < foodeaten; i++) {
+			if (head.x == tailSegments.get(i).x && head.y == tailSegments.get(i).y) {
+				foodeaten = 0;
+				tailSegments.clear();
+				Segment segment = new Segment(head.x, head.y);
+				tailSegments.add(segment);
+			}
+		}
 	}
 
 	/*
@@ -148,13 +155,13 @@ public class LeagueSnake extends PApplet {
 
 	void checkBoundaries() {
 		// If the snake leaves the frame, make it reappear on the other side
-		if (head.x > 505) {
+		if (head.x > 500) {
 			head.x = 0;
-		} else if (head.x < -5) {
+		} else if (head.x < 0) {
 			head.x = 500;
-		} else if (head.y > 505) {
-			head.y = 1;
-		} else if (head.y < -5) {
+		} else if (head.y > 500) {
+			head.y = 0;
+		} else if (head.y < 0) {
 			head.y = 500;
 		}
 	}
